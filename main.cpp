@@ -258,16 +258,21 @@ int process_gesture(map<int, int> direction){
 
 int recognize_gesture(map<int, int> direction,
                     vector<Point> points, Point higherPoint){
-    if(points.at(points.size()-2).x + 10 < higherPoint.x ){
+    Point p = points.at(points.size()-2);
+    if(p.x + 10 < higherPoint.x ){
         return DIRECTION_RIGHT;
-    }else if(points.at(points.size()-2).x - 10 > higherPoint.x){
+    }   
+    if(p.x - 10 > higherPoint.x){
         return DIRECTION_LEFT;
-    }else if(points.at(points.size()-2).y + 5 < higherPoint.y){
+    }
+    if(p.y + 5 < higherPoint.y){
         return DIRECTION_DOWN;
-    }else if(points.at(points.size()-2).y - 5 > higherPoint.y){
+    }
+    if(p.y - 5 > higherPoint.y){
         return DIRECTION_UP;
-    }else if(points.at(points.size()-2).y-higherPoint.y  < 5&&
-        points.at(points.size()-2).x-higherPoint.x < 5){
+    }
+    if(p.y-higherPoint.y  < 5 &&
+        p.x-higherPoint.x < 5){
         return DIRECTION_NONE;
     }
     return 0;
@@ -313,6 +318,7 @@ int main(int argc, char **argv){
         tie(img, imgHSV) = prepare_frame(frame);
         inRange(imgHSV, lower, upper, mask);
         maskMorph = mask_morph(mask);
+
         int x,y;
         vector< vector<Point> > contours;
         vector<Vec4i> hierarchy;
@@ -376,8 +382,7 @@ int main(int argc, char **argv){
                 }
             }
         }
-        if(gestures && higherPoint.y != 0 && higherPoint.x != 0 && 
-                points.size() > 0 && points.size()>1){
+        if(gestures && higherPoint.y != 0 && higherPoint.x != 0){
             dirId = recognize_gesture(direction, points, higherPoint);
             if(dirId != 0){
                 direction[dirId] += 1;

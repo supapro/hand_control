@@ -326,7 +326,6 @@ int main(int argc, char **argv){
         vector<vector<Point> >hull(contours.size());   
         vector<vector<int> > hullI(contours.size());
         vector<vector<Vec4i>> defects(contours.size());
-        int dirId = 0;
         if (hierarchy.size() > 0) {
             for (int i = 0; i >= 0; i = hierarchy[i][0]) {
                 Moments moment = moments((cv::Mat)contours[i]);
@@ -383,8 +382,7 @@ int main(int argc, char **argv){
             }
         }
         if(gestures && higherPoint.y != 0 && higherPoint.x != 0){
-            dirId = recognize_gesture(direction, points, higherPoint);
-            if(dirId != 0){
+            if(auto dirId = recognize_gesture(direction, points, higherPoint)){
                 direction[dirId] += 1;
                 directionRecognized = true;
             }
@@ -399,11 +397,9 @@ int main(int argc, char **argv){
             points.clear();
         }
         if(gestures && directionRecognized){
-            dirId = process_gesture(direction);
-            if(dirId != 0){
+            if(auto dirId = process_gesture(direction)){
                 direction.clear();
                 points.clear();
-                //sleep(1);
                 usleep(10000);
             }
         }

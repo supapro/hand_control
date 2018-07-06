@@ -381,9 +381,9 @@ int main(int argc, char **argv){
                 }
             }
         }
-        if(gestures && higherPoint.y != 0 && higherPoint.x != 0){
+        if(gestures && higherPoint.y != 0 && higherPoint.x != 0 && points.size() > 1){
             if(auto dirId = recognize_gesture(direction, points, higherPoint)){
-                direction[dirId] += 1;
+                ++direction[dirId];
                 directionRecognized = true;
             }
         }

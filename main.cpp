@@ -260,17 +260,13 @@ int recognize_gesture(map<int, int> direction,
                     vector<Point> points, Point higherPoint){
     if(points.at(points.size()-2).x + 10 < higherPoint.x ){
         return DIRECTION_RIGHT;
-    }   
-    if(points.at(points.size()-2).x - 10 > higherPoint.x){
+    }else if(points.at(points.size()-2).x - 10 > higherPoint.x){
         return DIRECTION_LEFT;
-    }
-    if(points.at(points.size()-2).y + 5 < higherPoint.y){
+    }else if(points.at(points.size()-2).y + 5 < higherPoint.y){
         return DIRECTION_DOWN;
-    }
-    if(points.at(points.size()-2).y - 5 > higherPoint.y){
+    }else if(points.at(points.size()-2).y - 5 > higherPoint.y){
         return DIRECTION_UP;
-    }
-    if(points.at(points.size()-2).y-higherPoint.y  < 5&&
+    }else if(points.at(points.size()-2).y-higherPoint.y  < 5&&
         points.at(points.size()-2).x-higherPoint.x < 5){
         return DIRECTION_NONE;
     }
@@ -317,7 +313,6 @@ int main(int argc, char **argv){
         tie(img, imgHSV) = prepare_frame(frame);
         inRange(imgHSV, lower, upper, mask);
         maskMorph = mask_morph(mask);
-
         int x,y;
         vector< vector<Point> > contours;
         vector<Vec4i> hierarchy;
@@ -381,14 +376,12 @@ int main(int argc, char **argv){
                 }
             }
         }
-        if(higherPoint.y != 0 && higherPoint.x != 0 && points.size() > 0){
-            if(points.size()>1){
-                if(gestures)
-                    dirId = recognize_gesture(direction, points, higherPoint);
-                    if(dirId != 0){
-                        direction[dirId] += 1;
-                        directionRecognized = true;
-                    }
+        if(gestures && higherPoint.y != 0 && higherPoint.x != 0 && 
+                points.size() > 0 && points.size()>1){
+            dirId = recognize_gesture(direction, points, higherPoint);
+            if(dirId != 0){
+                direction[dirId] += 1;
+                directionRecognized = true;
             }
         }
         if(mouse)
